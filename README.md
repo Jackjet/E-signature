@@ -34,7 +34,10 @@
 *  设置颜色等功能请看源码注释
   
 ###效果图
+* 白底黑字笔粗10px
 ![Logo](webimage/img1.jpg)
+* 红底白字笔粗20px
 ![Logo](webimage/img2.png)
+* 结果预览 上方为剪切边缘并去除背景色的结果 下方为横屏不处理结果
 ![Logo](webimage/img3.jpg)
   

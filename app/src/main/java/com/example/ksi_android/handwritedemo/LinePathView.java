@@ -22,7 +22,7 @@ import java.io.OutputStream;
 /**
  * 绘制Path的View 可用于签名
  * 
- * @author terry
+ * @author wastrel
  * 
  */
 @SuppressLint("ClickableViewAccessibility")

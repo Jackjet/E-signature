@@ -6,7 +6,7 @@
 
 ###如何使用
 * 下载项目
-* 将项目中的LinePathView.java和ScreenUtils.java拷贝到你的工程里
+* 将项目中的LinePathView.java拷贝到你的工程里
 * 在layout中布局:
 
 	```xml
@@ -19,7 +19,7 @@
 *  对保存按钮和清除按钮设置相应的监听
 
    ```java
-    msave.setOnClickListener(v -> {
+    mSave.setOnClickListener(v -> {
             if (view.getTouched()) {
             	//参数分别是保存路径、是否删除边缘空白、边缘保留多少空白（int:>0）、是否设置背景为透明、比较颜色容差值（double：0~1）
                 view.save(MainActivity.path, true, 10, true, 0.9);
@@ -29,7 +29,7 @@
                 Toast.makeText(HandWriteActivity.this, "您没有签名~", Toast.LENGTH_SHORT).show();
             }
         });
-        mclear.setOnClickListener(v -> view.clear());
+        mClear.setOnClickListener(v -> view.clear());
    ```
    
 *  设置颜色等功能请看源码注释

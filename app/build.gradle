@@ -7,7 +7,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
     defaultConfig {
-        applicationId "com.example.ksi_android.handwritedemo"
+        applicationId "com.wastrel.handwritedemo"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.ksi_android.handwritedemo;
+package com.wastrel.handwritedemo;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,9 +40,13 @@ public class HandWriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mPathView.getTouched()) {
-                    mPathView.save(MainActivity.path, true, 10, true, 0.9);
-                    setResult(100);
-                    finish();
+                    try {
+                        mPathView.save("/sdcard/qm.png", true, 10);
+                        setResult(100);
+                        finish();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
 
                     Toast.makeText(HandWriteActivity.this, "您没有签名~", Toast.LENGTH_SHORT).show();
@@ -57,8 +64,8 @@ public class HandWriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                mPathView.setBackColor(Color.RED);
                 mPathView.setPenColor(Color.WHITE);
+                mPathView.setBackColor(Color.RED);
                 mPathView.clear();
             }
         });

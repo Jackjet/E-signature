@@ -37,10 +37,11 @@
         />
 </LinearLayout>
 
-    <com.example.ksi_android.handwritedemo.LinePathView
+    <com.wastrel.handwritedemo.LinePathView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/view"
+        android:background="#FFFFFF"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

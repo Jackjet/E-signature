@@ -1,4 +1,4 @@
-package com.example.ksi_android.handwritedemo;
+package com.wastrel.handwritedemo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -17,7 +18,9 @@ import android.view.View;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 
@@ -44,7 +47,7 @@ public class LinePathView extends View {
      */
     private final Paint mGesturePaint = new Paint();
     /**
-     * 背景画笔
+     * 路径
      */
     private final Path mPath = new Path();
     /**
@@ -65,19 +68,13 @@ public class LinePathView extends View {
      * 画笔宽度 px；
      */
     private int mPaintWidth = 10;
-    /**
-     * 背景色
-     */
-    private int mBackColor = Color.WHITE;
+
     /**
      * 前景色
      */
     private int mPenColor = Color.BLACK;
-    /**
-     * 用于计算颜色相似度 仅比较颜色的RGB
-     */
-    private final static int COLOR_MAX = (int) Math.sqrt(255 * 255 + 255 * 255 + 255 * 255);
 
+    private int mBackColor=Color.TRANSPARENT;
     public LinePathView(Context context) {
         super(context);
         init(context);
@@ -99,9 +96,17 @@ public class LinePathView extends View {
         mGesturePaint.setStyle(Style.STROKE);
         mGesturePaint.setStrokeWidth(mPaintWidth);
         mGesturePaint.setColor(mPenColor);
-        cachebBitmap = Bitmap.createBitmap(getScreenWidth(mContext), getScreenHeight(mContext), Config.ARGB_8888);
+
+    }
+
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        cachebBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Config.ARGB_8888);
         cacheCanvas = new Canvas(cachebBitmap);
         cacheCanvas.drawColor(mBackColor);
+        isTouched=false;
     }
 
     @Override
@@ -181,9 +186,9 @@ public class LinePathView extends View {
         if (cacheCanvas != null) {
             isTouched = false;
             mGesturePaint.setColor(mPenColor);
-            cacheCanvas.drawPaint(mGesturePaint);
-            mGesturePaint.setColor(mPenColor);
             cacheCanvas.drawColor(mBackColor);
+            mGesturePaint.setColor(mPenColor);
+
             invalidate();
         }
     }
@@ -195,8 +200,8 @@ public class LinePathView extends View {
      * @param path 保存到路劲
      */
 
-    public void save(String path) {
-        save(path, false, 0, false, 0);
+    public void save(String path) throws IOException {
+        save(path, false, 0);
     }
 
     /**
@@ -204,26 +209,19 @@ public class LinePathView extends View {
      *
      * @param path       保存到路劲
      * @param clearBlank 是否清楚空白区域
-     * @param BACKGAUGE  边缘空白区域
-     * @param istran     是否背景翻转为透明
-     * @param similarity 背景颜色比对相似度 越高保留的前景色越多。
+     * @param blank  边缘空白区域
      */
-    public void save(String path, boolean clearBlank, int BACKGAUGE, boolean istran, double similarity) {
-        setDrawingCacheEnabled(true);
-        buildDrawingCache();
-        Bitmap bitmap = getDrawingCache();
-        //BitmapUtil.createScaledBitmapByHeight(srcBitmap, 300);//  压缩图片 ksicore的工具
+    public void save(String path, boolean clearBlank, int blank) throws IOException {
+
+        Bitmap bitmap=cachebBitmap;
+        //BitmapUtil.createScaledBitmapByHeight(srcBitmap, 300);//  压缩图片
         if (clearBlank) {
-            bitmap = clearBlank(bitmap, BACKGAUGE);
-        }
-        if (istran) {
-            bitmap = bitmapTransport(bitmap, similarity);
+            bitmap = clearBlank(bitmap, blank);
         }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
         byte[] buffer = bos.toByteArray();
         if (buffer != null) {
-            try {
                 File file = new File(path);
                 if (file.exists()) {
                     file.delete();
@@ -231,71 +229,33 @@ public class LinePathView extends View {
                 OutputStream outputStream = new FileOutputStream(file);
                 outputStream.write(buffer);
                 outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                setDrawingCacheEnabled(false);
-            }
         }
     }
 
     /**
-     * 比较两个颜色是否相同
-     *
-     * @param c1         颜色1
-     * @param c2         颜色2
-     * @param similarity 相似度多少认为一样
+     * 获取画板的bitmap
      * @return
      */
-    private boolean isSameColor(int c1, int c2, double similarity) {
-        if (similarity >= 1 || similarity < 0) {
-            return true;
-        } else if (similarity == 0) {
-            return false;
-        } else {
-            int r = Color.red(c1) - Color.red(c2);
-            int g = Color.green(c1) - Color.green(c2);
-            int b = Color.blue(c1) - Color.blue(c2);
-            double _similarity = 1 - Math.sqrt(r * r + g * g + b * b) / COLOR_MAX;
-            if (similarity > _similarity) {
-                return false;
-            } else {
-                return true;
-            }
-        }
+    public Bitmap getBitMap()
+    {
+        setDrawingCacheEnabled(true);
+        buildDrawingCache();
+        Bitmap bitmap=getDrawingCache();
+        setDrawingCacheEnabled(false);
+        return bitmap;
     }
 
 
-    /**
-     * 背景转透明
-     *
-     * @param bitmap
-     * @return
-     */
-    private Bitmap bitmapTransport(Bitmap bitmap, double similarity) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int[] argb = new int[width * height];
-        bitmap.getPixels(argb, 0, width, 0, 0, width, height);
-        for (int y = 0; y < height; y++)
-            for (int x = 0; x < width; x++) {
-                int index = y * width + x;
-                if (isSameColor(mBackColor, argb[index], similarity)) {
-                    argb[index] = 0x00000000;
-                }
-            }
-        return Bitmap.createBitmap(argb, width, height, Bitmap.Config.ARGB_8888);
-    }
 
 
     /**
      * 逐行扫描 清楚边界空白。
      *
      * @param bp
-     * @param BACKGAUGE 边距留多少个像素
+     * @param blank 边距留多少个像素
      * @return
      */
-    private Bitmap clearBlank(Bitmap bp, int BACKGAUGE) {
+    private Bitmap clearBlank(Bitmap bp, int blank) {
         int HEIGHT = bp.getHeight();
         int WIDTH = bp.getWidth();
         int top = 0, left = 0, right = 0, bottom = 0;
@@ -358,13 +318,13 @@ public class LinePathView extends View {
                 break;
             }
         }
-        if (BACKGAUGE < 0) {
-            BACKGAUGE = 0;
+        if (blank < 0) {
+            blank = 0;
         }
-        left = left - BACKGAUGE > 0 ? left - BACKGAUGE : 0;
-        top = top - BACKGAUGE > 0 ? top - BACKGAUGE : 0;
-        right = right + BACKGAUGE > WIDTH - 1 ? WIDTH - 1 : right + BACKGAUGE;
-        bottom = bottom + BACKGAUGE > HEIGHT - 1 ? HEIGHT - 1 : bottom + BACKGAUGE;
+        left = left - blank > 0 ? left - blank : 0;
+        top = top - blank > 0 ? top - blank : 0;
+        right = right + blank > WIDTH - 1 ? WIDTH - 1 : right + blank;
+        bottom = bottom + blank > HEIGHT - 1 ? HEIGHT - 1 : bottom + blank;
         return Bitmap.createBitmap(bp, left, top, right - left, bottom - top);
     }
 
@@ -380,15 +340,12 @@ public class LinePathView extends View {
 
     }
 
-    /**
-     * 设置画布背景色
-     *
-     * @param mBackColor
-     */
-    public void setBackColor(int mBackColor) {
-        this.mBackColor = mBackColor;
-        cacheCanvas.drawColor(mBackColor);
+
+    public void setBackColor(@ColorInt int backColor)
+    {
+        mBackColor=backColor;
     }
+
 
     /**
      * 设置画笔颜色
@@ -407,29 +364,5 @@ public class LinePathView extends View {
      */
     public boolean getTouched() {
         return isTouched;
-    }
-
-    /**
-     * 获取屏幕分辨率宽
-     *
-     * @param context
-     * @return
-     */
-    public static int getScreenWidth(Context context) {
-        DisplayMetrics dm = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        return dm.widthPixels;
-    }
-
-    /**
-     * 获取屏幕分辨率高
-     *
-     * @param context
-     * @return
-     */
-    public static int getScreenHeight(Context context) {
-        DisplayMetrics dm = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        return dm.heightPixels;
     }
 }

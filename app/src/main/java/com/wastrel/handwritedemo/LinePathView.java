@@ -10,9 +10,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -31,6 +33,8 @@ import java.io.OutputStream;
  */
 @SuppressLint("ClickableViewAccessibility")
 public class LinePathView extends View {
+
+    private  static final  String TAG=LinePathView.class.getSimpleName();
 
     private Context mContext;
 
@@ -107,6 +111,7 @@ public class LinePathView extends View {
         cacheCanvas = new Canvas(cachebBitmap);
         cacheCanvas.drawColor(mBackColor);
         isTouched=false;
+        Log.e(TAG,"chageTouch");
     }
 
     @Override
@@ -186,9 +191,8 @@ public class LinePathView extends View {
         if (cacheCanvas != null) {
             isTouched = false;
             mGesturePaint.setColor(mPenColor);
-            cacheCanvas.drawColor(mBackColor);
+            cacheCanvas.drawColor(mBackColor, PorterDuff.Mode.CLEAR);
             mGesturePaint.setColor(mPenColor);
-
             invalidate();
         }
     }

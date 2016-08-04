@@ -111,7 +111,6 @@ public class LinePathView extends View {
         cacheCanvas = new Canvas(cachebBitmap);
         cacheCanvas.drawColor(mBackColor);
         isTouched=false;
-        Log.e(TAG,"chageTouch");
     }
 
     @Override

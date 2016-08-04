@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6b718fd-a65d-486c-903a-08e59a604701" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/wastrel/handwritedemo/LinePathView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/wastrel/handwritedemo/LinePathView.java" />
     </list>
     <ignored path="E-signature.iws" />
@@ -97,8 +96,8 @@
       <file leaf-file-name="LinePathView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wastrel/handwritedemo/LinePathView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.58721936">
-              <caret line="193" column="67" selection-start-line="193" selection-start-column="46" selection-end-line="193" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.49913645">
+              <caret line="112" column="24" selection-start-line="112" selection-start-column="24" selection-end-line="112" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -2196,7 +2195,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/wastrel/handwritedemo/LinePathView.java</url>
-          <line>191</line>
+          <line>190</line>
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
@@ -2621,8 +2620,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/wastrel/handwritedemo/LinePathView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58721936">
-          <caret line="193" column="67" selection-start-line="193" selection-start-column="46" selection-end-line="193" selection-end-column="67" />
+        <state vertical-scroll-proportion="0.49913645">
+          <caret line="112" column="24" selection-start-line="112" selection-start-column="24" selection-end-line="112" selection-end-column="24" />
           <folding />
         </state>
       </provider>

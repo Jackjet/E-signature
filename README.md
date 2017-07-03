@@ -52,6 +52,6 @@ mPathView.clear();
 
 ![Logo](webimage/img1.jpg)
 
-![Logo](webimage/img2.png)
+![Logo](webimage/img2.jpg)
 
   

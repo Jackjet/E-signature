@@ -60,10 +60,10 @@ view.clear();
   view.clear();
 ```
   
-###效果图
+### 效果图
 
 ![Logo](webimage/img1.png)
 
-![Logo](webimage/img2.jpg)
+![Logo](webimage/img2.png)
 
   

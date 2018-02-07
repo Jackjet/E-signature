@@ -5,6 +5,8 @@
 
 
 [![](https://jitpack.io/v/venusic/E-signature.svg)](https://jitpack.io/#venusic/E-signature)
+
+Gradle 添加：
 ```
 	allprojects {
 		repositories {

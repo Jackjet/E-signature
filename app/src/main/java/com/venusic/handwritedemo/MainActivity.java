@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.venusic.handwritedemo.databinding.ActivityMainBinding;
 
 import java.io.File;
@@ -59,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
             Bitmap bm = BitmapFactory.decodeFile(path, options);
             binding.img1.setImageBitmap(bm);
         } else if (resultCode == 101) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
-            Bitmap bm = BitmapFactory.decodeFile(path1, options);
-            binding.img2.setImageBitmap(bm);
+            Glide.with(this).load(path1 + ".sign").skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(binding.img2);
         }
     }
 

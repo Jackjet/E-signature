@@ -35,7 +35,11 @@
 ```
 if (view.isSign()) {
     try {
-        view.save(MainActivity.path1, true, 10);
+        //路径
+        //是否清除边缘空白
+        //边缘保留多少像素空白
+        //是否加密存储 如果加密存储会自动在路径后面追加后缀.sign
+        view.save(MainActivity.path1, true, 10,true);
     } catch (IOException e) {
         e.printStackTrace();
     }
@@ -59,7 +63,20 @@ view.clear();
   view.setPaintColor(Color.WHITE);
   view.clear();
 ```
-  
+
+- 加密存储
+使用`SignFileInputStream`和`SignFileOutputStream`进行读写操作即可。如果使用Glide加载图片，可以在AndroidManifest.xml注册GlideModel：
+```
+   <application>
+       
+        <meta-data
+            android:name="com.venusic.handwrite.glide.SignFileModel"
+            android:value="GlideModule"/>
+   </application>
+```
+
+然后即可使用Glide正常加载加密之后的签名文件。
+
 ### 效果图
 
 ![Logo](webimage/img1.png)

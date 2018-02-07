@@ -51,7 +51,7 @@ public class NewActivity extends AppCompatActivity {
                 if (binding.view.isSign())
                     try {
                         if (isCrop) {
-                            binding.view.save(MainActivity.path1, true, 10);
+                            binding.view.save(MainActivity.path1, true, 10,true);
                             setResult(101);
                             finish();
                         } else {

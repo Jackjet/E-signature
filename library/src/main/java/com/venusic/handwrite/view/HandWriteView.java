@@ -11,10 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.venusic.handwrite.R;
+import com.venusic.handwrite.glide.SignFileOutputStream;
 import com.venusic.handwrite.view.point.DrawPoint;
 import com.venusic.handwrite.view.point.PointUtil;
 import com.venusic.handwrite.view.point.TimedPoint;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,7 +52,7 @@ public class HandWriteView extends View {
         this(context, attrs, 0);
     }
 
-    public HandWriteView(Context context,  AttributeSet attrs, int defStyleAttr) {
+    public HandWriteView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HandWriteView);
@@ -157,7 +157,11 @@ public class HandWriteView extends View {
      */
 
     public void save(String path) throws IOException {
-        save(path, false, 0);
+        save(path, false, 0, false);
+    }
+
+    public void save(String path, boolean isEncrypt) throws IOException {
+        save(path, false, 0, isEncrypt);
     }
 
     /**
@@ -166,12 +170,14 @@ public class HandWriteView extends View {
      * @param path       保存到路径
      * @param clearBlank 是否清楚空白区域
      * @param blank      边缘空白区域
+     * @param isEncrypt  加密存储，选择加密存储会自动追加后缀为.sign
      */
-    public void save(String path, boolean clearBlank, int blank) throws IOException {
+    public void save(String path, boolean clearBlank, int blank, boolean isEncrypt) throws IOException {
         Bitmap bitmap = mBitmap;
         if (clearBlank) {
             bitmap = clearBlank(bitmap, blank);
         }
+        if (isEncrypt) path = path + ".sign";
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
         byte[] buffer = bos.toByteArray();
@@ -180,7 +186,7 @@ public class HandWriteView extends View {
             if (file.exists()) {
                 file.delete();
             }
-            OutputStream outputStream = new FileOutputStream(file);
+            OutputStream outputStream = isEncrypt ? new SignFileOutputStream(file) : new FileOutputStream(file);
             outputStream.write(buffer);
             outputStream.close();
         }

@@ -11,6 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.venusic.handwrite.glide.SignFileModel"
+            android:value="GlideModule"/>
         <activity android:name="com.venusic.handwritedemo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

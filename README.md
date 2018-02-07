@@ -1,34 +1,46 @@
 （安卓电子签名简介）E-signature for Android
 ============================
 * 支持签名边缘裁剪
-* 支持去除背景色
-* 支持前景颜色或背景颜色修改
+* 根据速度进行了插值改变宽度。
 
 
+[![](https://jitpack.io/v/venusic/E-signature.svg)](https://jitpack.io/#venusic/E-signature)
+```
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+	
+	dependencies {
+    	        compile 'com.github.venusic:E-signature:${last_version}'
+    	}
+```
 ### 使用
 - 添加View
 
 ```
-    <com.wastrel.handwritedemo.LinePathView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view"
-        android:background="#FFFFFF" />
+     <com.wastrel.handwrite.view.HandWriteView
+               android:id="@+id/view"
+               android:layout_width="match_parent"
+               app:paintMaxWidth="20px" //最大宽度
+               app:paintMinWidth="10px" //最小宽度
+               app:paintColor="#FF0000" //颜色
+               android:layout_height="match_parent"/>
 ```
 - 保存
  
 
 ```
-if (mPathView.getTouched()) {
+if (view.isSign()) {
     try {
-        mPathView.save("/sdcard/qm.png", true, 10);
-        setResult(100);
-        finish();
+        view.save(MainActivity.path1, true, 10);
     } catch (IOException e) {
         e.printStackTrace();
     }
 } else {
-    Toast.makeText(HandWriteActivity.this, "您没有签名~", Toast.LENGTH_SHORT).show();
+    Toast.makeText(context, "您没有签名~", Toast.LENGTH_SHORT).show();
 }
 
 ```
@@ -37,15 +49,15 @@ if (mPathView.getTouched()) {
 - 清除
 
 ```
-mPathView.clear();
+view.clear();
 ```
 - 修改背景、笔宽、颜色
 
 ```
-  mPathView.setBackColor(Color.RED);
-  mPathView.setPaintWidth(20);
-  mPathView.setPenColor(Color.WHITE);
-  mPathView.clear();
+    //最小宽度、最大宽度
+  view.setPaintWidth(10,20);
+  view.setPaintColor(Color.WHITE);
+  view.clear();
 ```
   
 ###效果图

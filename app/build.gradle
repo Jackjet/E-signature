@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    dataBinding{
+        enabled true
+    }
     defaultConfig {
-        applicationId "com.wastrel.handwritedemo"
+        applicationId "com.venusic.handwritedemo"
         minSdkVersion 19
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -22,9 +26,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    compile project(":library")
 }

@@ -1,4 +1,4 @@
-（安卓电子签名简介）E-signature for Android
+（安卓电子签名简介）E-signature for Android V0.2
 ============================
 * 支持签名边缘裁剪
 * 根据速度进行了插值改变宽度。
@@ -62,7 +62,7 @@ view.clear();
   
 ###效果图
 
-![Logo](webimage/img1.jpg)
+![Logo](webimage/img1.png)
 
 ![Logo](webimage/img2.png)
 

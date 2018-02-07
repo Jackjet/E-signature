@@ -64,6 +64,6 @@ view.clear();
 
 ![Logo](webimage/img1.png)
 
-![Logo](webimage/img2.png)
+![Logo](webimage/img2.jpg)
 
   

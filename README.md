@@ -23,7 +23,7 @@ Gradle 添加：
 - 添加View
 
 ```
-     <com.wastrel.handwrite.view.HandWriteView
+     <com.venusic.handwrite.view.HandWriteView
                android:id="@+id/view"
                android:layout_width="match_parent"
                app:paintMaxWidth="20px" //最大宽度

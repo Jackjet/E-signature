@@ -67,6 +67,7 @@ public class HandWriteView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
+        a.recycle();
     }
 
     @Override
